@@ -18,7 +18,7 @@ import "github.com/goravel/oss"
 
 "providers": []foundation.ServiceProvider{
     ...
-    &sms.ServiceProvider{},
+    &oss.ServiceProvider{},
 }
 ```
 
