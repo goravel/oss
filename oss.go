@@ -3,6 +3,7 @@ package oss
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -40,15 +41,18 @@ func NewOss(ctx context.Context, config config.Config, disk string) (*Oss, error
 	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
 	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
 	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk))
+	if accessKeyId == "" || accessKeySecret == "" || bucket == "" || url == "" || endpoint == "" {
+		return nil, errors.New("please set oss configuration first")
+	}
 
 	client, err := oss.New(endpoint, accessKeyId, accessKeySecret)
 	if err != nil {
-		return nil, fmt.Errorf("[OSS] init disk error: %s", err)
+		return nil, fmt.Errorf("init %s disk error: %s", disk, err)
 	}
 
 	bucketInstance, err := client.Bucket(bucket)
 	if err != nil {
-		return nil, fmt.Errorf("[OSS] init %s bucket error: %s", bucket, err)
+		return nil, fmt.Errorf("init %s bucket of %s disk error: %s", bucket, disk, err)
 	}
 
 	return &Oss{
@@ -318,7 +322,7 @@ func (r *Oss) TemporaryUrl(file string, t time.Time) (string, error) {
 func (r *Oss) WithContext(ctx context.Context) filesystem.Driver {
 	driver, err := NewOss(ctx, r.config, r.disk)
 	if err != nil {
-		color.Redf("[OSS] init disk error: %+v\n", err)
+		color.Redf("init %s error: %+v\n", r.disk, err)
 
 		return nil
 	}
