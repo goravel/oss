@@ -26,6 +26,7 @@ import (
 type Oss struct {
 	ctx            context.Context
 	config         config.Config
+	disk           string
 	instance       *oss.Client
 	bucketInstance *oss.Bucket
 	bucket         string
@@ -33,12 +34,12 @@ type Oss struct {
 	endpoint       string
 }
 
-func NewOss(ctx context.Context, config config.Config) (*Oss, error) {
-	accessKeyId := config.GetString("oss.key")
-	accessKeySecret := config.GetString("oss.secret")
-	bucket := config.GetString("oss.bucket")
-	url := config.GetString("oss.url")
-	endpoint := config.GetString("oss.endpoint")
+func NewOss(ctx context.Context, config config.Config, disk string) (*Oss, error) {
+	accessKeyId := config.GetString(fmt.Sprintf("filesystems.disks.%s.key", disk))
+	accessKeySecret := config.GetString(fmt.Sprintf("filesystems.disks.%s.secret", disk))
+	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
+	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
+	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk))
 
 	client, err := oss.New(endpoint, accessKeyId, accessKeySecret)
 	if err != nil {
@@ -53,6 +54,7 @@ func NewOss(ctx context.Context, config config.Config) (*Oss, error) {
 	return &Oss{
 		ctx:            ctx,
 		config:         config,
+		disk:           disk,
 		instance:       client,
 		bucketInstance: bucketInstance,
 		bucket:         bucket,
@@ -314,7 +316,7 @@ func (r *Oss) TemporaryUrl(file string, t time.Time) (string, error) {
 }
 
 func (r *Oss) WithContext(ctx context.Context) filesystem.Driver {
-	driver, err := NewOss(ctx, r.config)
+	driver, err := NewOss(ctx, r.config, r.disk)
 	if err != nil {
 		color.Redf("[OSS] init disk error: %+v\n", err)
 

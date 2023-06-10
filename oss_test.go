@@ -26,11 +26,11 @@ func TestStorage(t *testing.T) {
 
 	mockConfig := &configmocks.Config{}
 	mockConfig.On("GetString", "app.timezone").Return("UTC")
-	mockConfig.On("GetString", "oss.key").Return(os.Getenv("ALIYUN_ACCESS_KEY_ID"))
-	mockConfig.On("GetString", "oss.secret").Return(os.Getenv("ALIYUN_ACCESS_KEY_SECRET"))
-	mockConfig.On("GetString", "oss.bucket").Return(os.Getenv("ALIYUN_BUCKET"))
-	mockConfig.On("GetString", "oss.url").Return(os.Getenv("ALIYUN_URL"))
-	mockConfig.On("GetString", "oss.endpoint").Return(os.Getenv("ALIYUN_ENDPOINT"))
+	mockConfig.On("GetString", "filesystems.disks.oss.key").Return(os.Getenv("ALIYUN_ACCESS_KEY_ID"))
+	mockConfig.On("GetString", "filesystems.disks.oss.secret").Return(os.Getenv("ALIYUN_ACCESS_KEY_SECRET"))
+	mockConfig.On("GetString", "filesystems.disks.oss.bucket").Return(os.Getenv("ALIYUN_BUCKET"))
+	mockConfig.On("GetString", "filesystems.disks.oss.url").Return(os.Getenv("ALIYUN_URL"))
+	mockConfig.On("GetString", "filesystems.disks.oss.endpoint").Return(os.Getenv("ALIYUN_ENDPOINT"))
 
 	var driver contractsfilesystem.Driver
 	url := os.Getenv("ALIYUN_URL")
@@ -370,7 +370,7 @@ func TestStorage(t *testing.T) {
 	}
 
 	var err error
-	driver, err = NewOss(context.Background(), mockConfig)
+	driver, err = NewOss(context.Background(), mockConfig, "oss")
 	assert.NotNil(t, driver)
 	assert.Nil(t, err)
 	for _, test := range tests {

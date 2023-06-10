@@ -1,6 +1,6 @@
-# oss
+# OSS
 
-A oss disk driver for facades.Storage of Goravel.
+An OSS disk driver for facades.Storage of Goravel.
 
 ## Install
 
@@ -18,19 +18,11 @@ import "github.com/goravel/oss"
 
 "providers": []foundation.ServiceProvider{
     ...
-    &sms.ServiceProvider{},
+    &oss.ServiceProvider{},
 }
 ```
 
-3. Publish configuration file
-dd
-```
-go run . artisan vendor:publish --package=github.com/goravel/oss
-```
-
-4. Fill your oss configuration to `config/oss.go` file
-
-5. Add oss disk to `config/filesystems.go` file
+3. Add oss disk to `config/filesystems.go` file
 
 ```
 // config/filesystems.go
@@ -43,8 +35,13 @@ import (
     ...
     "oss": map[string]any{
         "driver": "custom",
+        "key":      config.Env("ALIYUN_ACCESS_KEY_ID"),
+        "secret":   config.Env("ALIYUN_ACCESS_KEY_SECRET"),
+        "bucket":   config.Env("ALIYUN_BUCKET"),
+        "url":      config.Env("ALIYUN_URL"),
+        "endpoint": config.Env("ALIYUN_ENDPOINT"),
         "via": func() (filesystem.Driver, error) {
-            return ossfacades.Oss(), nil
+            return ossfacades.Oss("oss"), nil // The `oss` value is the `disks` key
         },
     },
 }
