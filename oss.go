@@ -3,7 +3,6 @@ package oss
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -42,7 +41,7 @@ func NewOss(ctx context.Context, config config.Config, disk string) (*Oss, error
 	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
 	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk))
 	if accessKeyId == "" || accessKeySecret == "" || bucket == "" || url == "" || endpoint == "" {
-		return nil, errors.New("please set oss configuration first")
+		return nil, fmt.Errorf("please set %s configuration first", disk)
 	}
 
 	client, err := oss.New(endpoint, accessKeyId, accessKeySecret)
