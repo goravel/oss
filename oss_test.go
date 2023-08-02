@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gookit/color"
+	"github.com/goravel/framework/support/carbon"
 	"github.com/stretchr/testify/assert"
 
 	configmocks "github.com/goravel/framework/contracts/config/mocks"
@@ -203,7 +204,7 @@ func TestStorage(t *testing.T) {
 
 				l, err := time.LoadLocation("UTC")
 				assert.Nil(t, err)
-				assert.Equal(t, time.Now().In(l).Format("2006-01-02 15"), date.Format("2006-01-02 15"))
+				assert.Equal(t, carbon.Now().ToStdTime().In(l).Format("2006-01-02 15"), date.Format("2006-01-02 15"))
 				assert.Nil(t, driver.DeleteDirectory("LastModified"))
 			},
 		},
@@ -339,7 +340,7 @@ func TestStorage(t *testing.T) {
 			setup: func() {
 				assert.Nil(t, driver.Put("TemporaryUrl/1.txt", "Goravel"))
 				assert.True(t, driver.Exists("TemporaryUrl/1.txt"))
-				url, err := driver.TemporaryUrl("TemporaryUrl/1.txt", time.Now().Add(5*time.Second))
+				url, err := driver.TemporaryUrl("TemporaryUrl/1.txt", carbon.Now().ToStdTime().Add(5*time.Second))
 				assert.Nil(t, err)
 				assert.NotEmpty(t, url)
 				resp, err := http.Get(url)
@@ -411,7 +412,7 @@ func (f *File) HashName(path ...string) string {
 }
 
 func (f *File) LastModified() (time.Time, error) {
-	return time.Now(), nil
+	return carbon.Now().ToStdTime(), nil
 }
 
 func (f *File) MimeType() (string, error) {
