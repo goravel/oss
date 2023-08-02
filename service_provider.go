@@ -22,7 +22,5 @@ func (receiver *ServiceProvider) Register(app foundation.Application) {
 }
 
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
-	app.Publishes("github.com/goravel/oss", map[string]string{
-		"config/oss.go": app.ConfigPath(""),
-	})
+
 }
