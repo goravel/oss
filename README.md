@@ -6,7 +6,8 @@ An OSS disk driver for facades.Storage of Goravel.
 
 | goravel/oss  | goravel/framework    |
 | ----------   | --------------       |
-| v1.0.0       | v1.12.0             |
+| v1.1.*       | v1.13.*              |
+| v1.0.*       | v1.12.*              |
 
 ## Install
 
