@@ -245,6 +245,7 @@ func TestStorage(t *testing.T) {
 				mimeType, err = driver.MimeType(path)
 				assert.Nil(t, err)
 				assert.Equal(t, "image/png", mimeType)
+				assert.Nil(t, driver.DeleteDirectory(rootFolder+"MimeType"))
 			},
 		},
 		{
