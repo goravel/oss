@@ -15,6 +15,7 @@ import (
 	"github.com/gookit/color"
 	"github.com/goravel/framework/contracts/config"
 	"github.com/goravel/framework/contracts/filesystem"
+	"github.com/goravel/framework/support/carbon"
 	"github.com/goravel/framework/support/str"
 )
 
@@ -310,7 +311,7 @@ func (r *Oss) Size(file string) (int64, error) {
 }
 
 func (r *Oss) TemporaryUrl(file string, t time.Time) (string, error) {
-	signedURL, err := r.bucketInstance.SignURL(file, oss.HTTPGet, int64(t.Sub(time.Now()).Seconds()))
+	signedURL, err := r.bucketInstance.SignURL(file, oss.HTTPGet, int64(t.Sub(carbon.Now().ToStdTime()).Seconds()))
 	if err != nil {
 		return "", err
 	}
