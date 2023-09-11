@@ -1,6 +1,6 @@
 # OSS
 
-An OSS disk driver for facades.Storage of Goravel.
+An OSS disk driver for `facades.Storage()` of Goravel.
 
 ## Version
 
