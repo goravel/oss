@@ -202,6 +202,20 @@ func TestStorage(t *testing.T) {
 			},
 		},
 		{
+			name: "GetBytes",
+			setup: func() {
+				assert.Nil(t, driver.Put(rootFolder+"GetBytes/1.txt", "Goravel"))
+				assert.True(t, driver.Exists(rootFolder+"GetBytes/1.txt"))
+				data, err := driver.GetBytes(rootFolder + "GetBytes/1.txt")
+				assert.Nil(t, err)
+				assert.Equal(t, []byte("Goravel"), data)
+				length, err := driver.Size(rootFolder + "GetBytes/1.txt")
+				assert.Nil(t, err)
+				assert.Equal(t, int64(7), length)
+				assert.Nil(t, driver.DeleteDirectory(rootFolder+"GetBytes"))
+			},
+		},
+		{
 			name: "LastModified",
 			setup: func() {
 				assert.Nil(t, driver.Put(rootFolder+"LastModified/1.txt", "Goravel"))
