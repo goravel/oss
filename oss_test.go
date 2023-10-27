@@ -3,7 +3,7 @@ package oss
 import (
 	"context"
 	"crypto/rand"
-	"io/ioutil"
+	"io"
 	"math/big"
 	"mime"
 	"net/http"
@@ -25,7 +25,7 @@ func TestStorage(t *testing.T) {
 		return
 	}
 
-	assert.Nil(t, ioutil.WriteFile("test.txt", []byte("Goravel"), 0644))
+	assert.Nil(t, os.WriteFile("test.txt", []byte("Goravel"), 0644))
 
 	url := os.Getenv("ALIYUN_URL")
 	mockConfig := &configmocks.Config{}
@@ -367,7 +367,7 @@ func TestStorage(t *testing.T) {
 				assert.NotEmpty(t, url)
 				resp, err := http.Get(url)
 				assert.Nil(t, err)
-				content, err := ioutil.ReadAll(resp.Body)
+				content, err := io.ReadAll(resp.Body)
 				assert.Nil(t, resp.Body.Close())
 				assert.Nil(t, err)
 				assert.Equal(t, "Goravel", string(content))
@@ -383,7 +383,7 @@ func TestStorage(t *testing.T) {
 				assert.Equal(t, url, driver.Url(rootFolder+"Url/1.txt"))
 				resp, err := http.Get(url)
 				assert.Nil(t, err)
-				content, err := ioutil.ReadAll(resp.Body)
+				content, err := io.ReadAll(resp.Body)
 				assert.Nil(t, resp.Body.Close())
 				assert.Nil(t, err)
 				assert.Equal(t, "Goravel", string(content))
