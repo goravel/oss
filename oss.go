@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strconv"
@@ -198,18 +198,24 @@ func (r *Oss) Files(path string) ([]string, error) {
 }
 
 func (r *Oss) Get(file string) (string, error) {
+	data, err := r.GetBytes(file)
+
+	return string(data), err
+}
+
+func (r *Oss) GetBytes(file string) ([]byte, error) {
 	res, err := r.bucketInstance.GetObject(file)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer res.Close()
 
-	data, err := ioutil.ReadAll(res)
+	data, err := io.ReadAll(res)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(data), nil
+	return data, nil
 }
 
 func (r *Oss) LastModified(file string) (time.Time, error) {
@@ -335,7 +341,7 @@ func (r *Oss) Url(file string) string {
 }
 
 func (r *Oss) tempFile(content string) (*os.File, error) {
-	tempFile, err := ioutil.TempFile(os.TempDir(), "goravel-")
+	tempFile, err := os.CreateTemp(os.TempDir(), "goravel-")
 	if err != nil {
 		return nil, err
 	}
