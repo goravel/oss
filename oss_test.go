@@ -278,6 +278,7 @@ func TestStorage(t *testing.T) {
 			name: "Put",
 			setup: func() {
 				assert.Nil(t, driver.Put(rootFolder+"Put/1.txt", "Goravel"))
+				assert.True(t, driver.Exists(rootFolder+"Put"))
 				assert.True(t, driver.Exists(rootFolder+"Put/1.txt"))
 				assert.True(t, driver.Missing(rootFolder+"Put/2.txt"))
 				assert.Nil(t, driver.DeleteDirectory(rootFolder+"Put"))
@@ -299,6 +300,7 @@ func TestStorage(t *testing.T) {
 				fileInfo := &File{path: "test.txt"}
 				path, err := driver.PutFile(rootFolder+"PutFile", fileInfo)
 				assert.Nil(t, err)
+				assert.True(t, driver.Exists(rootFolder+"PutFile"))
 				assert.True(t, driver.Exists(path))
 				data, err := driver.Get(path)
 				assert.Nil(t, err)
