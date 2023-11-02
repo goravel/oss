@@ -3,7 +3,7 @@ module github.com/goravel/oss
 go 1.20
 
 require (
-	github.com/aliyun/aliyun-oss-go-sdk v2.2.9+incompatible
+	github.com/aliyun/aliyun-oss-go-sdk v3.0.1+incompatible
 	github.com/gookit/color v1.5.4
 	github.com/goravel/framework v1.13.2
 	github.com/stretchr/testify v1.8.4
