@@ -15,8 +15,8 @@ import (
 	"github.com/goravel/framework/support/carbon"
 	"github.com/stretchr/testify/assert"
 
-	configmocks "github.com/goravel/framework/contracts/config/mocks"
-	contractsfilesystem "github.com/goravel/framework/contracts/filesystem"
+	filesystemcontract "github.com/goravel/framework/contracts/filesystem"
+	configmock "github.com/goravel/framework/mocks/config"
 )
 
 func TestStorage(t *testing.T) {
@@ -28,7 +28,7 @@ func TestStorage(t *testing.T) {
 	assert.Nil(t, os.WriteFile("test.txt", []byte("Goravel"), 0644))
 
 	url := os.Getenv("ALIYUN_URL")
-	mockConfig := &configmocks.Config{}
+	mockConfig := &configmock.Config{}
 	mockConfig.On("GetString", "app.timezone").Return("UTC")
 	mockConfig.On("GetString", "filesystems.disks.oss.key").Return(os.Getenv("ALIYUN_ACCESS_KEY_ID"))
 	mockConfig.On("GetString", "filesystems.disks.oss.secret").Return(os.Getenv("ALIYUN_ACCESS_KEY_SECRET"))
@@ -407,7 +407,7 @@ type File struct {
 	path string
 }
 
-func (f *File) Disk(disk string) contractsfilesystem.File {
+func (f *File) Disk(disk string) filesystemcontract.File {
 	return &File{}
 }
 
