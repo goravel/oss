@@ -15,8 +15,8 @@ import (
 	"github.com/goravel/framework/support/carbon"
 	"github.com/stretchr/testify/assert"
 
-	configmocks "github.com/goravel/framework/contracts/config/mocks"
-	contractsfilesystem "github.com/goravel/framework/contracts/filesystem"
+	filesystemcontract "github.com/goravel/framework/contracts/filesystem"
+	configmock "github.com/goravel/framework/mocks/config"
 )
 
 func TestStorage(t *testing.T) {
@@ -28,7 +28,7 @@ func TestStorage(t *testing.T) {
 	assert.Nil(t, os.WriteFile("test.txt", []byte("Goravel"), 0644))
 
 	url := os.Getenv("ALIYUN_URL")
-	mockConfig := &configmocks.Config{}
+	mockConfig := &configmock.Config{}
 	mockConfig.On("GetString", "app.timezone").Return("UTC")
 	mockConfig.On("GetString", "filesystems.disks.oss.key").Return(os.Getenv("ALIYUN_ACCESS_KEY_ID"))
 	mockConfig.On("GetString", "filesystems.disks.oss.secret").Return(os.Getenv("ALIYUN_ACCESS_KEY_SECRET"))
@@ -225,7 +225,7 @@ func TestStorage(t *testing.T) {
 
 				l, err := time.LoadLocation("UTC")
 				assert.Nil(t, err)
-				assert.Equal(t, carbon.Now().ToStdTime().In(l).Format("2006-01-02 15"), date.Format("2006-01-02 15"))
+				assert.Equal(t, carbon.Now().StdTime().In(l).Format("2006-01-02 15"), date.Format("2006-01-02 15"))
 				assert.Nil(t, driver.DeleteDirectory(rootFolder+"LastModified"))
 			},
 		},
@@ -364,7 +364,7 @@ func TestStorage(t *testing.T) {
 			setup: func() {
 				assert.Nil(t, driver.Put(rootFolder+"TemporaryUrl/1.txt", "Goravel"))
 				assert.True(t, driver.Exists(rootFolder+"TemporaryUrl/1.txt"))
-				url, err := driver.TemporaryUrl(rootFolder+"TemporaryUrl/1.txt", carbon.Now().ToStdTime().Add(5*time.Second))
+				url, err := driver.TemporaryUrl(rootFolder+"TemporaryUrl/1.txt", carbon.Now().StdTime().Add(5*time.Second))
 				assert.Nil(t, err)
 				assert.NotEmpty(t, url)
 				resp, err := http.Get(url)
@@ -407,7 +407,7 @@ type File struct {
 	path string
 }
 
-func (f *File) Disk(disk string) contractsfilesystem.File {
+func (f *File) Disk(disk string) filesystemcontract.File {
 	return &File{}
 }
 
@@ -432,7 +432,7 @@ func (f *File) HashName(path ...string) string {
 }
 
 func (f *File) LastModified() (time.Time, error) {
-	return carbon.Now().ToStdTime(), nil
+	return carbon.Now().StdTime(), nil
 }
 
 func (f *File) MimeType() (string, error) {
