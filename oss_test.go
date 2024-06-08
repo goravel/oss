@@ -432,7 +432,7 @@ func (f *File) HashName(path ...string) string {
 }
 
 func (f *File) LastModified() (time.Time, error) {
-	return carbon.Now().ToStdTime(), nil
+	return carbon.Now().StdTime(), nil
 }
 
 func (f *File) MimeType() (string, error) {
