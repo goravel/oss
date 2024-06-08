@@ -225,7 +225,7 @@ func TestStorage(t *testing.T) {
 
 				l, err := time.LoadLocation("UTC")
 				assert.Nil(t, err)
-				assert.Equal(t, carbon.Now().ToStdTime().In(l).Format("2006-01-02 15"), date.Format("2006-01-02 15"))
+				assert.Equal(t, carbon.Now().StdTime().In(l).Format("2006-01-02 15"), date.Format("2006-01-02 15"))
 				assert.Nil(t, driver.DeleteDirectory(rootFolder+"LastModified"))
 			},
 		},
@@ -364,7 +364,7 @@ func TestStorage(t *testing.T) {
 			setup: func() {
 				assert.Nil(t, driver.Put(rootFolder+"TemporaryUrl/1.txt", "Goravel"))
 				assert.True(t, driver.Exists(rootFolder+"TemporaryUrl/1.txt"))
-				url, err := driver.TemporaryUrl(rootFolder+"TemporaryUrl/1.txt", carbon.Now().ToStdTime().Add(5*time.Second))
+				url, err := driver.TemporaryUrl(rootFolder+"TemporaryUrl/1.txt", carbon.Now().StdTime().Add(5*time.Second))
 				assert.Nil(t, err)
 				assert.NotEmpty(t, url)
 				resp, err := http.Get(url)
