@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
 	github.com/gookit/color v1.5.4
-	github.com/goravel/framework v1.14.1
+	github.com/goravel/framework v1.14.2
 	github.com/stretchr/testify v1.9.0
 )
 
