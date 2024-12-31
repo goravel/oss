@@ -4,7 +4,21 @@ on:
     branches:
       - master
   pull_request:
+env:
+  ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+  ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+  ALIYUN_BUCKET: ${{ secrets.ALIYUN_BUCKET }}
+  ALIYUN_URL: ${{ secrets.ALIYUN_URL }}
+  ALIYUN_ENDPOINT: ${{ secrets.ALIYUN_ENDPOINT }}
 jobs:
-  test:
-    uses: goravel/.github/.github/workflows/test.yml@master
-    secrets: inherit
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+      - name: Install dependencies
+        run: go mod tidy
+      - name: Run tests
+        run: go test -timeout 1h ./...
