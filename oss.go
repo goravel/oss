@@ -279,14 +279,8 @@ func (r *Oss) Path(file string) string {
 func (r *Oss) Put(file string, content string) error {
 	// If the file is created in a folder directly, we can't check if the folder exists.
 	// So we need to create the top folder first.
-	if !strings.HasSuffix(file, "/") {
-		index := strings.Index(file, "/")
-		if index != -1 {
-			folder := file[:index+1]
-			if err := r.MakeDirectory(folder); err != nil {
-				return err
-			}
-		}
+	if err := r.makeDirectories(file); err != nil {
+		return err
 	}
 
 	tempFile, err := r.tempFile(content)
@@ -310,14 +304,8 @@ func (r *Oss) PutFileAs(filePath string, source filesystem.File, name string) (s
 
 	// If the file is created in a folder directly, we can't check if the folder exists.
 	// So we need to create the top folder first.
-	if !strings.HasSuffix(fullPath, "/") {
-		index := strings.Index(fullPath, "/")
-		if index != -1 {
-			folder := fullPath[:index+1]
-			if err := r.MakeDirectory(folder); err != nil {
-				return "", err
-			}
-		}
+	if err := r.makeDirectories(str.Of(filePath).Finish("/").String()); err != nil {
+		return "", err
 	}
 
 	if err := r.bucketInstance.PutObjectFromFile(fullPath, source.File()); err != nil {
@@ -368,6 +356,18 @@ func (r *Oss) WithContext(ctx context.Context) filesystem.Driver {
 
 func (r *Oss) Url(file string) string {
 	return r.url + "/" + file
+}
+
+func (r *Oss) makeDirectories(path string) error {
+	folders := strings.Split(path, "/")
+	for i := 1; i < len(folders); i++ {
+		folder := strings.Join(folders[:i], "/")
+		if err := r.MakeDirectory(folder); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (r *Oss) tempFile(content string) (*os.File, error) {
