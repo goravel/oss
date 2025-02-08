@@ -15,6 +15,7 @@ import (
 	"github.com/gookit/color"
 	"github.com/goravel/framework/contracts/config"
 	"github.com/goravel/framework/contracts/filesystem"
+	contractshttp "github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/support/carbon"
 	"github.com/goravel/framework/support/str"
 )
@@ -344,6 +345,10 @@ func (r *Oss) TemporaryUrl(file string, t time.Time) (string, error) {
 }
 
 func (r *Oss) WithContext(ctx context.Context) filesystem.Driver {
+	if httpCtx, ok := ctx.(contractshttp.Context); ok {
+		ctx = httpCtx.Context()
+	}
+
 	driver, err := NewOss(ctx, r.config, r.disk)
 	if err != nil {
 		color.Redf("init %s error: %+v\n", r.disk, err)
