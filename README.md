@@ -50,7 +50,7 @@ import (
         "url":      config.Env("ALIYUN_URL"),
         "endpoint": config.Env("ALIYUN_ENDPOINT"),
         "via": func() (filesystem.Driver, error) {
-            return ossfacades.Oss("oss"), nil // The `oss` value is the `disks` key
+            return ossfacades.Oss("oss") // The `oss` value is the `disks` key
         },
     },
 }
