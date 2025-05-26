@@ -7,7 +7,7 @@ toolchain go1.24.3
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
 	github.com/gookit/color v1.5.4
-	github.com/goravel/framework v1.15.2-0.20250513024952-5c6bf415f2ed
+	github.com/goravel/framework v1.15.8
 	github.com/stretchr/testify v1.10.0
 )
 
