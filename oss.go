@@ -215,7 +215,9 @@ func (r *Oss) GetBytes(file string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer res.Close()
+	defer func() {
+		_ = res.Close()
+	}()
 
 	data, err := io.ReadAll(res)
 	if err != nil {
@@ -285,7 +287,10 @@ func (r *Oss) Put(file string, content string) error {
 	}
 
 	tempFile, err := r.tempFile(content)
-	defer os.Remove(tempFile.Name())
+	defer func() {
+		_ = os.Remove(tempFile.Name())
+	}()
+
 	if err != nil {
 		return err
 	}
