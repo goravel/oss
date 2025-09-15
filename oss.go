@@ -12,11 +12,11 @@ import (
 	"time"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"github.com/gookit/color"
 	"github.com/goravel/framework/contracts/config"
 	"github.com/goravel/framework/contracts/filesystem"
 	contractshttp "github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/support/carbon"
+	"github.com/goravel/framework/support/color"
 	"github.com/goravel/framework/support/str"
 )
 
@@ -356,7 +356,7 @@ func (r *Oss) WithContext(ctx context.Context) filesystem.Driver {
 
 	driver, err := NewOss(ctx, r.config, r.disk)
 	if err != nil {
-		color.Redf("init %s error: %+v\n", r.disk, err)
+		color.Red().Printfln("init %s error: %+v", r.disk, err)
 
 		return nil
 	}
