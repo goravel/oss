@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gookit/color"
 	"github.com/goravel/framework/support/carbon"
+	"github.com/goravel/framework/support/color"
 	"github.com/stretchr/testify/assert"
 
 	filesystemcontract "github.com/goravel/framework/contracts/filesystem"
@@ -19,7 +19,7 @@ import (
 
 func TestStorage(t *testing.T) {
 	if os.Getenv("ALIYUN_ACCESS_KEY_ID") == "" {
-		color.Redln("No filesystem tests run, please add oss configuration: ALIYUN_ACCESS_KEY_ID= ALIYUN_ACCESS_KEY_SECRET= ALIYUN_BUCKET= ALIYUN_URL= ALIYUN_ENDPOINT= go test ./...")
+		color.Red().Println("No filesystem tests run, please add oss configuration: ALIYUN_ACCESS_KEY_ID= ALIYUN_ACCESS_KEY_SECRET= ALIYUN_BUCKET= ALIYUN_URL= ALIYUN_ENDPOINT= go test ./...")
 		return
 	}
 
