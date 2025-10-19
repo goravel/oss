@@ -29,7 +29,8 @@ func main() {
 				Find(match.Providers()).Modify(modify.Register("&oss.ServiceProvider{}")),
 			modify.GoFile(path.Config("filesystems.go")).
 				Find(match.Imports()).Modify(modify.AddImport("github.com/goravel/framework/contracts/filesystem"), modify.AddImport("github.com/goravel/oss/facades", "ossfacades")).
-				Find(match.Config("filesystems.disks")).Modify(modify.AddConfig("oss", config)),
+				Find(match.Config("filesystems.disks")).Modify(modify.AddConfig("oss", config)).
+				Find(match.Config("filesystems")).Modify(modify.AddConfig("default", `"oss"`)),
 		).
 		Uninstall(
 			modify.GoFile(path.Config("app.go")).
@@ -37,7 +38,8 @@ func main() {
 				Find(match.Imports()).Modify(modify.RemoveImport(packages.GetModulePath())),
 			modify.GoFile(path.Config("filesystems.go")).
 				Find(match.Config("filesystems.disks")).Modify(modify.RemoveConfig("oss")).
-				Find(match.Imports()).Modify(modify.RemoveImport("github.com/goravel/framework/contracts/filesystem"), modify.RemoveImport("github.com/goravel/oss/facades", "ossfacades")),
+				Find(match.Imports()).Modify(modify.RemoveImport("github.com/goravel/framework/contracts/filesystem"), modify.RemoveImport("github.com/goravel/oss/facades", "ossfacades")).
+				Find(match.Config("filesystems")).Modify(modify.AddConfig("default", `""`)),
 		).
 		Execute()
 }
