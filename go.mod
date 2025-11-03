@@ -6,7 +6,7 @@ toolchain go1.25.3
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
-	github.com/goravel/framework v1.16.4
+	github.com/goravel/framework v1.16.5
 	github.com/stretchr/testify v1.11.1
 )
 
