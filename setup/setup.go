@@ -55,13 +55,13 @@ func main() {
 			Find(filesystemsConfig).Modify(modify.AddConfig("default", `"oss"`)),
 	).Uninstall(
 		// Remove oss disk from filesystems.go
-		modify.GoFile(filesystemsConfigPath).
+		modify.WhenFileExists(filesystemsConfigPath, modify.GoFile(filesystemsConfigPath).
 			Find(filesystemsConfig).Modify(modify.AddConfig("default", `"local"`)).
 			Find(filesystemsDisksConfig).Modify(modify.RemoveConfig("oss")).
 			Find(match.Imports()).Modify(
 			modify.RemoveImport(filesystemContract),
 			modify.RemoveImport(ossFacades, "ossfacades"),
-		),
+		)),
 
 		// Remove oss service provider from app.go if not using bootstrap setup
 		modify.When(func(_ map[string]any) bool {
