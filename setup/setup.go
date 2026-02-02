@@ -44,7 +44,7 @@ func main() {
 		// Add oss service provider to providers.go if using bootstrap setup
 		modify.When(func(_ map[string]any) bool {
 			return env.IsBootstrapSetup()
-		}, modify.AddProviderApply(moduleImport, ossServiceProvider)),
+		}, modify.RegisterProvider(moduleImport, ossServiceProvider)),
 
 		// Add oss disk to filesystems.go
 		modify.GoFile(filesystemsConfigPath).Find(match.Imports()).Modify(
@@ -73,6 +73,6 @@ func main() {
 		// Remove oss service provider from providers.go if using bootstrap setup
 		modify.When(func(_ map[string]any) bool {
 			return env.IsBootstrapSetup()
-		}, modify.RemoveProviderApply(moduleImport, ossServiceProvider)),
+		}, modify.UnregisterProvider(moduleImport, ossServiceProvider)),
 	).Execute()
 }
