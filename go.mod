@@ -2,7 +2,7 @@ module github.com/goravel/oss
 
 go 1.25.0
 
-toolchain go1.27.2
+toolchain go1.27.3
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
